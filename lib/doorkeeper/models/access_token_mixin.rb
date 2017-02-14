@@ -52,7 +52,7 @@ module Doorkeeper
                             else
                               resource_owner_or_id
                             end
-        token = last_authorized_token_for(application.try(:id), resource_owner_id)
+        token = last_authorized_token_for(application.try(:id), resource_owner_id, scopes)
         if token && scopes_match?(token.scopes, scopes, OAuth::Scopes.new)
           token
         end
@@ -83,10 +83,11 @@ module Doorkeeper
         )
       end
 
-      def last_authorized_token_for(application_id, resource_owner_id)
+      def last_authorized_token_for(application_id, resource_owner_id, scopes)
         where(application_id: application_id,
               resource_owner_id: resource_owner_id,
-              revoked_at: nil).
+              revoked_at: nil,
+              scopes: scopes.to_s).
           send(order_method, created_at_desc).
           limit(1).
           to_a.
