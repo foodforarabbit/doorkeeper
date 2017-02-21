@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141209001746) do
+ActiveRecord::Schema.define(version: 20160320211015) do
 
   create_table "oauth_access_grants", force: true do |t|
     t.integer  "resource_owner_id",              null: false
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20141209001746) do
     t.datetime "created_at",                     null: false
     t.datetime "revoked_at"
     t.string   "scopes"
+    t.string   "previous_refresh_token", default: "", null: false
   end
 
   add_index "oauth_access_grants", ["token"], name: "index_oauth_access_grants_on_token", unique: true
